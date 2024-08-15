@@ -7,6 +7,12 @@ using UnityEngine;
 [RequireComponent(typeof(Mover))]
 public class Creature : MonoBehaviour, IDamageable
 {
+    private const string IsGrounded = "IsGrounded";
+    private const string SpeedX = "SpeedX";
+    private const string SpeedY = "SpeedY";
+    private const string Attack = "Attack";
+    private const string Death = "Death";
+
     [SerializeField] private Attacker _attacker;
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _dieAnimationDuration;
@@ -40,9 +46,9 @@ public class Creature : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        _animator.SetBool("IsGrounded", _mover.IsGrounded);
-        _animator.SetFloat("SpeedX", Mathf.Abs(_rigidbody.velocity.x));
-        _animator.SetFloat("SpeedY", _rigidbody.velocity.y);
+        _animator.SetBool(IsGrounded, _mover.IsGrounded);
+        _animator.SetFloat(SpeedX, Mathf.Abs(_rigidbody.velocity.x));
+        _animator.SetFloat(SpeedY, _rigidbody.velocity.y);
     }
 
     public void TakeDamage(float damage)
@@ -61,13 +67,13 @@ public class Creature : MonoBehaviour, IDamageable
 
     private void OnAttackStarted()
     {
-        _animator.SetTrigger("Attack");
+        _animator.SetTrigger(Attack);
     }
 
     private void Die()
     {
         _controller.TurnOff();
-        _animator.SetTrigger("Death");
+        _animator.SetTrigger(Death);
         Destroy(gameObject, _dieAnimationDuration);
     }
 }

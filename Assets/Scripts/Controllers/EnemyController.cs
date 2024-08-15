@@ -22,6 +22,7 @@ public class EnemyController : Controller
         foreach (PlayerChecker checker in _playerCheckers)
         {
             checker.PlayerSpotted += OnPlaeyrSpotted;
+            checker.PlayerLeave += OnPlayerLeave;
         }
     }
 
@@ -30,6 +31,7 @@ public class EnemyController : Controller
         foreach (PlayerChecker checker in _playerCheckers)
         {
             checker.PlayerSpotted -= OnPlaeyrSpotted;
+            checker.PlayerLeave -= OnPlayerLeave;
         }
     }
 
@@ -62,5 +64,10 @@ public class EnemyController : Controller
     {
         _target = player;
         _isStalking = true;
+    }
+
+    private void OnPlayerLeave()
+    {
+        _isStalking = false;
     }
 }

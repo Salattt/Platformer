@@ -1,4 +1,3 @@
-using System.Text;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]

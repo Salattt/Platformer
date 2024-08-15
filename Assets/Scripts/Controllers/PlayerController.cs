@@ -4,7 +4,7 @@ public class PlayerController : Controller
 {
     private void Update()
     {
-        if (_isWorking)
+        if (IsWorking)
         {
             MoveAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             IsAtacking = Input.GetKeyDown(KeyCode.Space);
