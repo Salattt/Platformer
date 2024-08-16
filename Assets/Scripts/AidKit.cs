@@ -5,13 +5,10 @@ public class AidKit : MonoBehaviour
 {
     [SerializeField] private float _heal;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void GetHeal(out float heal)
     {
-        if(collision.TryGetComponent<Player>(out Player player))
-        {
-            player.Heal(_heal);
+        heal = _heal;
 
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }

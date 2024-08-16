@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Controller : MonoBehaviour
+public class Input : MonoBehaviour
 {
     public Vector2 MoveAxis { get; protected set; }
     public bool IsAtacking { get; protected set; }

@@ -4,11 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(Mover))]
 public class Player : Creature
 {
-    public void Heal(float heal)
-    {
-        if (heal < 0)
-            throw new ArgumentOutOfRangeException(nameof(heal));
+    [SerializeField] private AidKitDetector _aidKitDetector;
 
-        _health += heal;
+    private void OnEnable()
+    {
+        _aidKitDetector.HealReceived += OnHealReceived;
+    }
+
+    private void OnDisable()
+    {
+        _aidKitDetector.HealReceived -= OnHealReceived;
+    }
+
+    public void OnHealReceived(float heal)
+    {
+        Hp.TakeHeal(heal);
     }
 }

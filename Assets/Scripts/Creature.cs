@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-[RequireComponent (typeof(Controller))]
+[RequireComponent (typeof(Input))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Mover))]
 public class Creature : MonoBehaviour, IDamageable
@@ -16,12 +16,12 @@ public class Creature : MonoBehaviour, IDamageable
     [SerializeField] private Attacker _attacker;
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _dieAnimationDuration;
-    [SerializeField] private Controller _controller;
+    [SerializeField] private Input _controller;
 
     private Animator _animator;
     private Rigidbody2D _rigidbody;
     private Mover _mover;
-    protected float _health;
+    protected Health Hp;
 
     public Transform Transform { get; private set; }
 
@@ -30,8 +30,8 @@ public class Creature : MonoBehaviour, IDamageable
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _mover = GetComponent<Mover>();
-        _health = _maxHealth;
         Transform = transform;
+        Hp = new Health(_maxHealth);
     }
 
     private void OnEnable()
@@ -53,16 +53,7 @@ public class Creature : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        if (damage <= 0)
-            throw new ArgumentOutOfRangeException(nameof(damage));
-
-        _health -= damage;
-
-        if(_health <= 0)
-        {
-            _health = 0;
-            Die();
-        }
+        Hp.TakeDamage(damage);
     }
 
     private void OnAttackStarted()

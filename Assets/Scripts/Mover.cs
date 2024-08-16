@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Mover : MonoBehaviour
 {
-    [SerializeField] GroundChecker _checker;
-    [SerializeField] Controller _controller;
+    [SerializeField] GroundDetector _detector;
+    [SerializeField] Input _controller;
     [SerializeField] float _maxVelocity;
     [SerializeField] float _acceleration;
     [SerializeField] float _jumpForce;
@@ -12,7 +12,7 @@ public class Mover : MonoBehaviour
     private Rigidbody2D _rigidbody;
 
     public float LastHorizontalVelocity { get; private set; }
-    public bool IsGrounded { get {return _checker.IsGrounded; } }
+    public bool IsGrounded { get {return _detector.IsGrounded; } }
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class Mover : MonoBehaviour
 
     private void TryJump()
     {
-        if(_controller.MoveAxis.y > 0 && _checker.IsGrounded && Mathf.Abs(_rigidbody.velocity.y) <= 0.1)
+        if(_controller.MoveAxis.y > 0 && _detector.IsGrounded && Mathf.Abs(_rigidbody.velocity.y) <= 0.1)
         {
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }

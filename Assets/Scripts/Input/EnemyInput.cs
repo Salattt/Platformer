@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : Controller
+public class EnemyInput : Input
 {
-    [SerializeField] private List<PlayerChecker> _playerCheckers;
+    [SerializeField] private List<PlayerDetector> _playerCheckers;
     [SerializeField] private AttackChecker _attackChecker;
-    [SerializeField] private GroundChecker _wallChecker;
+    [SerializeField] private GroundDetector _wallChecker;
 
     private Transform _transform;
     private Player _target;
@@ -19,19 +19,19 @@ public class EnemyController : Controller
 
     private void OnEnable()
     {
-        foreach (PlayerChecker checker in _playerCheckers)
+        foreach (PlayerDetector checker in _playerCheckers)
         {
-            checker.PlayerSpotted += OnPlaeyrSpotted;
-            checker.PlayerLeave += OnPlayerLeave;
+            checker.Spotted += OnPlaeyrSpotted;
+            checker.Leave += OnPlayerLeave;
         }
     }
 
     private void OnDisable()
     {
-        foreach (PlayerChecker checker in _playerCheckers)
+        foreach (PlayerDetector checker in _playerCheckers)
         {
-            checker.PlayerSpotted -= OnPlaeyrSpotted;
-            checker.PlayerLeave -= OnPlayerLeave;
+            checker.Spotted -= OnPlaeyrSpotted;
+            checker.Leave -= OnPlayerLeave;
         }
     }
 

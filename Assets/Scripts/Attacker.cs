@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Attacker : MonoBehaviour
 {
-    [SerializeField] private Controller _controller;
+    [SerializeField] private Input _controller;
     [SerializeField] private float _attackTime;
     [SerializeField] private float _damage;
 
@@ -21,6 +21,16 @@ public class Attacker : MonoBehaviour
             StartCoroutine(Attack());
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (IsAttacking && collision.TryGetComponent(out IDamageable damageable) && _isAttackPerformed == false)
+        {
+            damageable.TakeDamage(_damage);
+
+            _isAttackPerformed = true;
+        }
+    }
+
     private IEnumerator Attack()
     {
         IsAttacking = true;
@@ -30,15 +40,5 @@ public class Attacker : MonoBehaviour
 
         _isAttackPerformed = false;
         IsAttacking = false;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (IsAttacking && collision.TryGetComponent<IDamageable>(out IDamageable damageable) && _isAttackPerformed == false)
-        {
-            damageable.TakeDamage(_damage);
-
-            _isAttackPerformed = true;
-        }
     }
 }
