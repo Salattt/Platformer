@@ -4,27 +4,30 @@ public class Health : IDamageable
 {
     public Health(float maxHealth)
     {
-        MaxHealth = maxHealth;
-        Hp = maxHealth;
+        Max = maxHealth;
+        Current = maxHealth;
     }
 
     public event Action Die;
+    public event Action HealthChanded;
 
-    public float Hp {  get; private set; }
-    public float MaxHealth { get;}
+    public float Current {  get; private set; }
+    public float Max { get;}
 
     public void TakeDamage(float damage)
     {
         if (damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage));
 
-        Hp -= damage;
+        Current -= damage;
 
-        if(Hp <= 0)
+        if(Current <= 0)
         {
-            Hp = 0;
+            Current = 0;
             Die?.Invoke();
         }
+
+        HealthChanded?.Invoke();
     }
 
     public void TakeHeal(float heal)
@@ -32,9 +35,11 @@ public class Health : IDamageable
         if (heal < 0)
             throw new ArgumentOutOfRangeException(nameof(heal));
 
-        Hp += heal;
+        Current += heal;
 
-        if (Hp >= MaxHealth)
-            Hp = MaxHealth;
+        if (Current >= Max)
+            Current = Max;
+
+        HealthChanded?.Invoke();
     }
 }

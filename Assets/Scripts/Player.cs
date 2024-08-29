@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
@@ -6,18 +5,20 @@ public class Player : Creature
 {
     [SerializeField] private AidKitDetector _aidKitDetector;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _aidKitDetector.HealReceived += OnHealReceived;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         _aidKitDetector.HealReceived -= OnHealReceived;
     }
 
     public void OnHealReceived(float heal)
     {
-        Hp.TakeHeal(heal);
+        Health.TakeHeal(heal);
     }
 }

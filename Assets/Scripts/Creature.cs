@@ -18,12 +18,16 @@ public class Creature : MonoBehaviour, IDamageable
     [SerializeField] private float _dieAnimationDuration;
     [SerializeField] private Input _controller;
 
+    protected Health Health;
     private Animator _animator;
     private Rigidbody2D _rigidbody;
     private Mover _mover;
-    protected Health Hp;
+
+    public event Action HealthChanded;
 
     public Transform Transform { get; private set; }
+    public float MaxHealth { get { return Health.Max; } }
+    public float CurrentHealth {  get { return Health.Current; } }
 
     private void Awake()
     {
@@ -31,17 +35,23 @@ public class Creature : MonoBehaviour, IDamageable
         _animator = GetComponent<Animator>();
         _mover = GetComponent<Mover>();
         Transform = transform;
-        Hp = new Health(_maxHealth);
+        Health = new Health(_maxHealth);
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _attacker.AttackStarted += OnAttackStarted;
+        Health.Die += OnDie;
+        Health.HealthChanded += OnHealthChanded;
+        HealthChanded?.Invoke();
+        Debug.Log("asd");
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _attacker.AttackStarted -= OnAttackStarted;
+        Health.Die -= OnDie;
+        Health.HealthChanded -= OnHealthChanded;
     }
 
     private void Update()
@@ -53,7 +63,7 @@ public class Creature : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        Hp.TakeDamage(damage);
+        Health.TakeDamage(damage);
     }
 
     private void OnAttackStarted()
@@ -61,10 +71,15 @@ public class Creature : MonoBehaviour, IDamageable
         _animator.SetTrigger(Attack);
     }
 
-    private void Die()
+    private void OnDie()
     {
         _controller.TurnOff();
         _animator.SetTrigger(Death);
         Destroy(gameObject, _dieAnimationDuration);
+    }
+
+    private void OnHealthChanded()
+    {
+        HealthChanded?.Invoke();
     }
 }
