@@ -16,6 +16,14 @@ public class SmoothHealthBar : HeatlthView
         _slider = GetComponent<Slider>();
     }
 
+    protected override void UpdateHealth(float currentHealth, float maxHealth)
+    {
+        if (_isValueChanging)
+            StopCoroutine(_valueChanger);
+
+        _valueChanger = StartCoroutine(ChangeValue(currentHealth / maxHealth));
+    }
+
     private IEnumerator ChangeValue(float targetValue)
     {
         WaitForSeconds delay = new WaitForSeconds(Time.fixedDeltaTime);
@@ -29,13 +37,5 @@ public class SmoothHealthBar : HeatlthView
         }
 
         _isValueChanging = false;
-    }
-
-    protected override void UpdateHealth(float currentHealth, float maxHealth)
-    {
-        if (_isValueChanging)
-            StopCoroutine(_valueChanger);
-
-        _valueChanger = StartCoroutine(ChangeValue(currentHealth / maxHealth));
     }
 }

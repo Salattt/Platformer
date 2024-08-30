@@ -47,6 +47,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1604953947139282497}
   - component: {fileID: 3046879485027715180}
+  - component: {fileID: 6160013741662166250}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -127,6 +128,20 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6160013741662166250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420507716495820263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a868f19ce2e644081e97cc4b8594a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _creature: {fileID: 0}
+  _sliderSpeed: 0.03
 --- !u!1 &1978276719271601664
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +331,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1.598}
+  m_AnchoredPosition: {x: 0, y: 1.597992}
   m_SizeDelta: {x: 1, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1430232717688817068
@@ -362,7 +377,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2551558372866102198
 MonoBehaviour:
   m_ObjectHideFlags: 0

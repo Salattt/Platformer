@@ -8,17 +8,12 @@ public class Player : Creature
     protected override void OnEnable()
     {
         base.OnEnable();
-        _aidKitDetector.HealReceived += OnHealReceived;
+        _aidKitDetector.HealReceived += Health.TakeHeal;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        _aidKitDetector.HealReceived -= OnHealReceived;
-    }
-
-    public void OnHealReceived(float heal)
-    {
-        Health.TakeHeal(heal);
+        _aidKitDetector.HealReceived -= Health.TakeHeal;
     }
 }

@@ -3,16 +3,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Mover : MonoBehaviour
 {
-    [SerializeField] GroundDetector _detector;
-    [SerializeField] Input _controller;
-    [SerializeField] float _maxVelocity;
-    [SerializeField] float _acceleration;
-    [SerializeField] float _jumpForce;
+    [SerializeField] private GroundDetector _detector;
+    [SerializeField] private Input _controller;
+    [SerializeField] private float _maxVelocity;
+    [SerializeField] private float _acceleration;
+    [SerializeField] private float _jumpForce;
 
     private Rigidbody2D _rigidbody;
 
     public float LastHorizontalVelocity { get; private set; }
-    public bool IsGrounded { get {return _detector.IsGrounded; } }
+    public bool IsGrounded => _detector.IsGrounded;
 
     private void Awake()
     {

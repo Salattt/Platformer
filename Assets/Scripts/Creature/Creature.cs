@@ -17,6 +17,7 @@ public class Creature : MonoBehaviour, IDamageable
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _dieAnimationDuration;
     [SerializeField] private Input _controller;
+    [SerializeField] private Canvas _healthBar;
 
     protected Health Health;
     private Animator _animator;
@@ -44,7 +45,6 @@ public class Creature : MonoBehaviour, IDamageable
         Health.Die += OnDie;
         Health.HealthChanded += OnHealthChanded;
         HealthChanded?.Invoke();
-        Debug.Log("asd");
     }
 
     protected virtual void OnDisable()
@@ -75,6 +75,7 @@ public class Creature : MonoBehaviour, IDamageable
     {
         _controller.TurnOff();
         _animator.SetTrigger(Death);
+        Destroy(_healthBar.gameObject);
         Destroy(gameObject, _dieAnimationDuration);
     }
 

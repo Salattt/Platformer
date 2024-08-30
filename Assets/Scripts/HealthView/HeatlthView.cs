@@ -4,7 +4,6 @@ public abstract class HeatlthView : MonoBehaviour
 {
     [SerializeField] private Creature _creature;
 
-
     private void OnEnable()
     {
         _creature.HealthChanded += OnHealthChanged;
