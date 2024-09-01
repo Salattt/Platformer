@@ -18,7 +18,6 @@ public class VampireAbility : MonoBehaviour
     private CircleCollider2D _circleCollider;
     private SpriteRenderer _spriteRenderer;
     private bool _isEnabled = false;
-    private Coroutine _VampireJob;
     private Transform _transform;
 
     public event Action<float> HealthRecived;
@@ -46,7 +45,7 @@ public class VampireAbility : MonoBehaviour
     private void Update()
     {
         if (_input.isVampiring && _isEnabled == false)
-            _VampireJob = StartCoroutine(StartVampirism());
+            StartCoroutine(StartVampirism());
     }
 
     private void Drain()
@@ -79,35 +78,35 @@ public class VampireAbility : MonoBehaviour
 
     private IEnumerator StartVampirism()
     {
-        float Timer = 0;
-        WaitForSeconds Updateduration = new WaitForSeconds(Time.fixedDeltaTime);
+        float timer = 0;
+        WaitForSeconds updateduration = new WaitForSeconds(Time.fixedDeltaTime);
 
         _isEnabled = true;
         _circleCollider.enabled = true;
         _spriteRenderer.enabled=true;
 
-        while (Timer < _duration)
+        while (timer < _duration)
         {
-            yield return Updateduration;
+            yield return updateduration;
 
             Drain();
 
-            Timer += Time.fixedDeltaTime;
-            CurrentLevel = Mathf.MoveTowards(CurrentLevel, 0,Timer/ _duration);
+            timer += Time.fixedDeltaTime;
+            CurrentLevel = Mathf.MoveTowards(CurrentLevel, 0,timer/ _duration);
 
             LevelChanged?.Invoke();
         }
 
         _circleCollider.enabled = false;
         _spriteRenderer.enabled = false;
-        Timer = 0;
+        timer = 0;
 
-        while (Timer < _recoil)
+        while (timer < _recoil)
         {
-            yield return Updateduration;
+            yield return updateduration;
 
-            Timer += Time.fixedDeltaTime;
-            CurrentLevel = Mathf.MoveTowards(CurrentLevel, MaxLevel, Timer / _recoil);
+            timer += Time.fixedDeltaTime;
+            CurrentLevel = Mathf.MoveTowards(CurrentLevel, MaxLevel, timer / _recoil);
 
             LevelChanged?.Invoke();
         }
