@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +13,13 @@ public class VampireAbility : MonoBehaviour
     [SerializeField] private float _recoil;
     [SerializeField] private float _damagePerSecond;
 
+    private List<Creature> _creatures = new List<Creature>();
+
     private CircleCollider2D _circleCollider;
     private SpriteRenderer _spriteRenderer;
     private bool _isEnabled = false;
     private Coroutine _VampireJob;
+    private Transform _transform;
 
     public event Action<float> HealthRecived;
     public event Action LevelChanged;
@@ -27,6 +31,7 @@ public class VampireAbility : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _circleCollider = GetComponent<CircleCollider2D>();
+        _transform = transform;
     }
 
     private void OnEnable()
@@ -44,6 +49,34 @@ public class VampireAbility : MonoBehaviour
             _VampireJob = StartCoroutine(StartVampirism());
     }
 
+    private void Drain()
+    {
+        if(_creatures.Count > 0)
+        {
+            Creature target = SearchNearestCreature();
+            float targetHealth = target.CurrentHealth;
+
+            target.TakeDamage(_damagePerSecond * Time.fixedDeltaTime);
+
+            HealthRecived?.Invoke(targetHealth - target.CurrentHealth);
+        }
+    }
+
+    private Creature SearchNearestCreature()
+    {
+        Creature nearestCreature;
+
+        nearestCreature = _creatures[0];
+
+        for (int i = 0; i < _creatures.Count; i++)
+        {
+            if((nearestCreature.Transform.position - _transform.position).magnitude < (_creatures[i].Transform.position - _transform.position).magnitude)
+                nearestCreature = _creatures[i];
+        }
+
+        return nearestCreature;
+    }
+
     private IEnumerator StartVampirism()
     {
         float Timer = 0;
@@ -56,6 +89,8 @@ public class VampireAbility : MonoBehaviour
         while (Timer < _duration)
         {
             yield return Updateduration;
+
+            Drain();
 
             Timer += Time.fixedDeltaTime;
             CurrentLevel = Mathf.MoveTowards(CurrentLevel, 0,Timer/ _duration);
@@ -77,16 +112,23 @@ public class VampireAbility : MonoBehaviour
             LevelChanged?.Invoke();
         }
 
+        _creatures.Clear();
         _isEnabled = false;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.TryGetComponent(out Creature creature))
         {
-            creature.TakeDamage(_damagePerSecond * Time.fixedDeltaTime);
+            _creatures.Add(creature);
+        }
+    }
 
-            HealthRecived?.Invoke(_damagePerSecond * Time.fixedDeltaTime);
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out Creature creature))
+        {
+            _creatures.Remove(creature);
         }
     }
 }
